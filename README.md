@@ -42,52 +42,16 @@ This framework includes everything you need to build APIs with this amazing lang
 
 - Copy the ```app.env.example``` to ```app.env``` and fill in your SMTP and DB preferences.
 
-- Start postgres container:
+- Build the docker image:
 
     ```bash
-    make postgres
+    make build-docker-image
     ```
 
-- Create database:
+- Start all required Docker containers:
 
     ```bash
-    make createdb
-    ```
-
-- Create Redis:
-
-    ```bash
-    make redis
-    ```
-
-- Create new migration:
-
-    ```bash
-    migrate create -ext sql -dir db/migration -seq $(SEQ_NAME)
-    ```
-
-- Run db migration up all versions:
-
-    ```bash
-    make migrateup
-    ```
-
-- Run db migration up 1 version:
-
-    ```bash
-    make migrateup1
-    ```
-
-- Run db migration down all versions:
-
-    ```bash
-    make migratedown
-    ```
-
-- Run db migration down 1 version:
-
-    ```bash
-    make migratedown1
+    make docker-up
     ```
 
 ### Documentation
@@ -132,19 +96,19 @@ This framework includes everything you need to build APIs with this amazing lang
 
 ### How to run
 
-- Run server:
-
-    ```bash
-    make server
-    ```
-
 - Run test:
 
     ```bash
     make test
     ```
 
-- Run Dockerized app:
+- Run the main.go as standalone server:
+
+    ```bash
+    make server
+    ```
+
+- Or run it as Dockerized app:
 
     ```bash
     make docker-up
