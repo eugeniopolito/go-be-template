@@ -102,7 +102,7 @@ This framework includes everything you need to build APIs with this amazing lang
     make test
     ```
 
-- Run the main.go as standalone server:
+- Run the ```main.go``` as standalone server:
 
     ```bash
     make server
