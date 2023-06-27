@@ -196,6 +196,12 @@ const docTemplate = `{
                             "$ref": "#/definitions/api.loginUserResponse"
                         }
                     },
+                    "400": {
+                        "description": "user not verified"
+                    },
+                    "401": {
+                        "description": "invalid credentials"
+                    },
                     "404": {
                         "description": "no rows in resultset"
                     }

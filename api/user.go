@@ -198,6 +198,8 @@ type loginUserResponse struct {
 // @Param req body loginUserRequest true "loginUserRequest"
 // @Success 200 {object} loginUserResponse
 // @Failure 404 "no rows in resultset"
+// @Failure 400 "user not verified"
+// @Failure 401 "invalid credentials"
 // @Router /users/login [post]
 func (server *Server) loginUser(ctx *gin.Context) {
 	session := sessions.Default(ctx)
@@ -225,7 +227,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 
 	err = util.CheckPassword(req.Password, user.Password)
 	if err != nil {
-		ctx.JSON(http.StatusUnauthorized, errorResponse(err.Error()))
+		ctx.JSON(http.StatusUnauthorized, errorResponse("invalid credentials"))
 		return
 	}
 	accessToken, err := server.tokenMaker.CreateToken(req.Username, int(user.Role.Int32), server.config.AccessTokenDuration)
