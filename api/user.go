@@ -138,6 +138,19 @@ type verifyEmailResponse struct {
 	IsVerified bool `json:"is_verified"`
 }
 
+// @BasePath /api/v1
+
+// Verify the user godoc
+// @Summary perform the user verification with email check
+// @Schemes
+// @Description check the code received in the email during registration is correct
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param req body verifyEmailRequest true "verifyEmailRequest"
+// @Success 200 {object} verifyEmailResponse
+// @Failure 500 "failed to verify email"
+// @Router /verify_email [get]
 func (server *Server) verifyEmail(ctx *gin.Context) {
 	var req verifyEmailRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
@@ -240,6 +253,18 @@ type getUserRequest struct {
 	Username string `uri:"username" binding:"required"`
 }
 
+// @BasePath /api/v1
+
+// Get user info godoc
+// @Summary get the user info
+// @Schemes
+// @Description returns the user info
+// @Tags users
+// @Param username path string  true  "Username"
+// @Param authorization header string  true  "Authorization"
+// @Produce json
+// @Success 200 {object} userResponse
+// @Router /user/{username} [get]
 func (server *Server) getUser(ctx *gin.Context) {
 	var req getUserRequest
 	if err := ctx.ShouldBindUri(&req); err != nil {
@@ -266,6 +291,16 @@ func (server *Server) getUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, createUserResponse(user))
 }
 
+// @BasePath /api/v1
+
+// Logout User godoc
+// @Summary perform a user logout
+// @Schemes
+// @Description delete the user session
+// @Tags users
+// @Produce json
+// @Success 200 "Successfully logged out"
+// @Router /users/logout [post]
 func (server *Server) logoutUser(c *gin.Context) {
 	u, r := LoggedUsernameAndRole(c, server.tokenMaker)
 	log.Info().Int("role", r).Str("user", u).Msg("successfully logged out")

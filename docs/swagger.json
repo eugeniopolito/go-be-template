@@ -4,6 +4,42 @@
         "contact": {}
     },
     "paths": {
+        "/user/{username}": {
+            "get": {
+                "description": "returns the user info",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "get the user info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Username",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.userResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "post": {
                 "description": "create a new user",
@@ -71,6 +107,60 @@
                     },
                     "404": {
                         "description": "no rows in resultset"
+                    }
+                }
+            }
+        },
+        "/users/logout": {
+            "post": {
+                "description": "delete the user session",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "perform a user logout",
+                "responses": {
+                    "200": {
+                        "description": "Successfully logged out"
+                    }
+                }
+            }
+        },
+        "/verify_email": {
+            "get": {
+                "description": "check the code received in the email during registration is correct",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "perform the user verification with email check",
+                "parameters": [
+                    {
+                        "description": "verifyEmailRequest",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.verifyEmailRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.verifyEmailResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "failed to verify email"
                     }
                 }
             }
@@ -169,6 +259,29 @@
                 "username": {
                     "description": "The username of a thing\nexample: joedoe",
                     "type": "string"
+                }
+            }
+        },
+        "api.verifyEmailRequest": {
+            "type": "object",
+            "required": [
+                "email_id",
+                "secret_code"
+            ],
+            "properties": {
+                "email_id": {
+                    "type": "integer"
+                },
+                "secret_code": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.verifyEmailResponse": {
+            "type": "object",
+            "properties": {
+                "is_verified": {
+                    "type": "boolean"
                 }
             }
         }

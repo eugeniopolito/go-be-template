@@ -80,9 +80,48 @@ definitions:
           example: joedoe
         type: string
     type: object
+  api.verifyEmailRequest:
+    properties:
+      email_id:
+        type: integer
+      secret_code:
+        type: string
+    required:
+    - email_id
+    - secret_code
+    type: object
+  api.verifyEmailResponse:
+    properties:
+      is_verified:
+        type: boolean
+    type: object
 info:
   contact: {}
 paths:
+  /user/{username}:
+    get:
+      description: returns the user info
+      parameters:
+      - description: Username
+        in: path
+        name: username
+        required: true
+        type: string
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.userResponse'
+      summary: get the user info
+      tags:
+      - users
   /users:
     post:
       consumes:
@@ -127,6 +166,41 @@ paths:
         "404":
           description: no rows in resultset
       summary: perform a new user login
+      tags:
+      - users
+  /users/logout:
+    post:
+      description: delete the user session
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully logged out
+      summary: perform a user logout
+      tags:
+      - users
+  /verify_email:
+    get:
+      consumes:
+      - application/json
+      description: check the code received in the email during registration is correct
+      parameters:
+      - description: verifyEmailRequest
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/api.verifyEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.verifyEmailResponse'
+        "500":
+          description: failed to verify email
+      summary: perform the user verification with email check
       tags:
       - users
 swagger: "2.0"
