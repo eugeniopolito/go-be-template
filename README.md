@@ -150,7 +150,7 @@ This framework includes everything you need to build APIs with this amazing lang
     make docker-up
     ```
 
-- Visit the Swagger documentation at local address:
+- Visit the Swagger APIs documentation at your local address:
 
     ```
     http://localhost:8080/swagger/index.html
