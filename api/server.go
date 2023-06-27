@@ -60,6 +60,7 @@ func (server *Server) setupRouter() {
 	router.POST("/v1/users", server.createUser)
 	router.GET("/v1/verify_email", server.verifyEmail)
 	router.POST("/v1/users/login", server.loginUser)
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	// user, authenticated
 	authRoutes := router.Group("/v1")
@@ -75,7 +76,6 @@ func (server *Server) setupRouter() {
 	authAdminRoutes.GET("/users", server.listUsers)
 	authAdminRoutes.GET("/users/count", server.countUsers)
 
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	server.router = router
 }
 
