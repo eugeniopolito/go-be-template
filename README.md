@@ -1,6 +1,7 @@
-# GO BE Template
+# Golang Back End Template
 
-A Docker multi container for GO APIs development. This framework includes everything you need to build APIs with: PostgreSQL, Redis and GO Gin framework for rapid Back End development!
+A Docker multi container for APIs development in Go!
+This framework includes everything you need to build APIs with this amazing language: PostgreSQL, Redis and Go Gin framework for rapid Back End development!
 
 ## Setup local development
 
