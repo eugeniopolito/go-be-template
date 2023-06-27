@@ -65,7 +65,7 @@ func (processor *RedisTaskProcessor) ProcessSendVerifyEmail(ctx context.Context,
 		return fmt.Errorf("failed to create verify email: %w", asynq.SkipRetry)
 	}
 
-	verifyURL := fmt.Sprintf("http://localhost:8080/v1/verify_email?email_id=%d&secret_code=%s", verifyEmail.ID, verifyEmail.SecretCode)
+	verifyURL := fmt.Sprintf(processor.config.VerifyEmailAddress+"?email_id=%d&secret_code=%s", verifyEmail.ID, verifyEmail.SecretCode)
 	subject := "Welcome to GO BE Template!"
 	content := fmt.Sprintf(`Hello %s %s,<br>
 

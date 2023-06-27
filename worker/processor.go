@@ -5,6 +5,7 @@ import (
 
 	db "github.com/eugeniopolito/gobetemplate/db/sqlc"
 	"github.com/eugeniopolito/gobetemplate/mail"
+	"github.com/eugeniopolito/gobetemplate/util"
 	"github.com/hibiken/asynq"
 	log "github.com/rs/zerolog/log"
 )
@@ -22,10 +23,11 @@ type TaskProcessor interface {
 type RedisTaskProcessor struct {
 	server *asynq.Server
 	store  db.Store
+	config util.Config
 	mailer mail.EmailSender
 }
 
-func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store, mailer mail.EmailSender) TaskProcessor {
+func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store, config util.Config, mailer mail.EmailSender) TaskProcessor {
 	server := asynq.NewServer(redisOpt, asynq.Config{
 		Queues: map[string]int{
 			QueueCritical: 10,
@@ -39,6 +41,7 @@ func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store, mailer
 	return &RedisTaskProcessor{
 		server: server,
 		store:  store,
+		config: config,
 		mailer: mailer,
 	}
 }

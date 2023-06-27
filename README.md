@@ -1,7 +1,7 @@
 # Golang Back End Template
 
 A Docker multi container for APIs development in Go!
-This framework includes everything you need to build APIs with this amazing language: PostgreSQL, Redis and Go Gin framework for rapid Back End development!
+This framework includes everything you need to build APIs with Golang: Nginx, PostgreSQL, Redis and Gin framework for rapid Back End development!
 
 ## Setup local development
 
@@ -116,5 +116,5 @@ This framework includes everything you need to build APIs with this amazing lang
 - Visit the Swagger APIs documentation at your local address:
 
     ```
-    http://localhost:8080/swagger/index.html
+    http://localhost/swagger/index.html
     ```

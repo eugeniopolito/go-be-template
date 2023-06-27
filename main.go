@@ -69,7 +69,7 @@ func runGinServer(config util.Config, store db.Store, taskDistributor worker.Tas
 
 func runTaskProcessor(config util.Config, redisOpt asynq.RedisClientOpt, store db.Store) {
 	mailer := mail.NewGmailSender(config.EmailSenderName, config.EmailSenderAddress, config.EmailSenderPassword, config.SmtpAuthAddress, config.SmtpServerAddress)
-	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store, mailer)
+	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store, config, mailer)
 	log.Info().Msg("Start task processor")
 	err := taskProcessor.Start()
 	if err != nil {

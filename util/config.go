@@ -19,6 +19,7 @@ type Config struct {
 	EmailSenderName     string        `mapstructure:"EMAIL_SENDER_NAME"`
 	EmailSenderAddress  string        `mapstructure:"EMAIL_SENDER_ADDRESS"`
 	EmailSenderPassword string        `mapstructure:"EMAIL_SENDER_PASSWORD"`
+	VerifyEmailAddress  string        `mapstructure:"VERIFY_EMAIL_ADDRESS"`
 }
 
 func LoadConfig(path string) (config Config, err error) {

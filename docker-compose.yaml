@@ -35,3 +35,9 @@ services:
       - redis
     entrypoint: ["/app/wait_for.sh", "postgres:5432", "--", "/app/start.sh"]
     command: ["/app/main"]
+  nginx:
+    build: "./nginx"
+    ports:
+      - "80:80"
+    depends_on:
+      - "api"
