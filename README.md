@@ -84,13 +84,19 @@ This framework includes everything you need to build APIs with Golang: Nginx, Po
 - Create a new DBML documentation:
 
     ```bash
-    make db_docs
+    make db-docs
     ```
 
 - Create a new schema from DBML:
 
     ```bash
-    make db_schema
+    make db-schema
+    ```
+
+- Create Swagger documentation:
+
+    ```bash
+    make create-swagger-doc
     ```
 
 ### How to run
@@ -107,7 +113,7 @@ This framework includes everything you need to build APIs with Golang: Nginx, Po
     make server
     ```
 
-- Or run it as Dockerized app:
+- Or run it as Dockerized app with Docker Compose:
 
     ```bash
     make docker-up
