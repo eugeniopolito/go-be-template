@@ -133,7 +133,7 @@ const docTemplate = `{
         },
         "/users": {
             "post": {
-                "description": "create a new user",
+                "description": "create a new user. The created user will receive a confirmation email to activate the account.",
                 "consumes": [
                     "application/json"
                 ],

@@ -70,7 +70,7 @@ func createUserResponse(user db.User) userResponse {
 // Create User godoc
 // @Summary create a new user
 // @Schemes
-// @Description create a new user
+// @Description creates a new user who receives a verification email on his/her email address to confirm the registration.
 // @Tags users
 // @Accept json
 // @Produce json

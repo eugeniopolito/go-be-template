@@ -184,7 +184,8 @@ paths:
     post:
       consumes:
       - application/json
-      description: create a new user
+      description: create a new user. The created user will receive a confirmation
+        email to activate the account.
       parameters:
       - description: createUserRequest
         in: body
