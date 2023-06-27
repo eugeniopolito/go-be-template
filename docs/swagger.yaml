@@ -1,4 +1,9 @@
 definitions:
+  api.countUsersResponse:
+    properties:
+      count:
+        type: integer
+    type: object
   api.createUserRequest:
     properties:
       email:
@@ -98,6 +103,59 @@ definitions:
 info:
   contact: {}
 paths:
+  /admin/users:
+    get:
+      consumes:
+      - application/json
+      description: get paginated user list
+      parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - in: query
+        minimum: 1
+        name: page
+        required: true
+        type: integer
+      - in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/api.userResponse'
+            type: array
+      summary: get the user list paginated
+      tags:
+      - users
+  /admin/users/count:
+    get:
+      description: get user count
+      parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.countUsersResponse'
+      summary: get the user count for pagination
+      tags:
+      - users
   /user/{username}:
     get:
       description: returns the user info

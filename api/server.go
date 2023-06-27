@@ -69,7 +69,7 @@ func (server *Server) setupRouter() {
 	authRoutes.GET("/user/:username", server.getUser)
 
 	// admin, authenticated
-	authAdminRoutes := router.Group("/admin/v1")
+	authAdminRoutes := router.Group("/v1/admin")
 	authAdminRoutes.Use(DefaultStructuredLogger())
 	authAdminRoutes.Use(authMiddleware(server.tokenMaker, true, util.ADMIN))
 	authAdminRoutes.GET("/users", server.listUsers)

@@ -313,6 +313,19 @@ func (server *Server) logoutUser(c *gin.Context) {
 	c.JSON(http.StatusOK, "Successfully logged out")
 }
 
+// @BasePath /api/v1
+
+// List the users godoc
+// @Summary get the user list paginated
+// @Schemes
+// @Description get paginated user list
+// @Tags users
+// @Param authorization header string  true  "Authorization"
+// @Accept json
+// @Produce json
+// @Param req query paginationRequest true "paginationRequest"
+// @Success 200 {array} userResponse
+// @Router /admin/users [get]
 func (server *Server) listUsers(ctx *gin.Context) {
 	var req paginationRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
@@ -340,11 +353,29 @@ func (server *Server) listUsers(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, lUsers)
 }
 
+type countUsersResponse struct {
+	Count int `json:"count"`
+}
+
+// @BasePath /api/v1
+
+// Get the users count godoc
+// @Summary get the user count for pagination
+// @Schemes
+// @Description get user count
+// @Tags users
+// @Param authorization header string  true  "Authorization"
+// @Produce json
+// @Success 200 {object} countUsersResponse
+// @Router /admin/users/count [get]
 func (server *Server) countUsers(ctx *gin.Context) {
 	countUsers, err := server.store.CountUsers(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err.Error()))
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"count": countUsers})
+	countResponse := countUsersResponse{
+		Count: int(countUsers),
+	}
+	ctx.JSON(http.StatusOK, countResponse)
 }
