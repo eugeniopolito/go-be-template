@@ -66,11 +66,8 @@ func (processor *RedisTaskProcessor) ProcessSendVerifyEmail(ctx context.Context,
 	}
 
 	verifyURL := fmt.Sprintf(processor.config.VerifyEmailAddress+"?email_id=%d&secret_code=%s", verifyEmail.ID, verifyEmail.SecretCode)
-	subject := "Welcome to GO BE Template!"
-	content := fmt.Sprintf(`Hello %s %s,<br>
-
-	Thank you for registering with us.<br>
-	Please <a href="%s">click here</a> to verify your email address.<br>`, user.Name, user.Surname, verifyURL)
+	subject := processor.config.VerifyEmailSubject
+	content := fmt.Sprintf(processor.config.VerifyEmailBody, user.Name, user.Surname, verifyURL)
 
 	to := []string{user.Email}
 	err = processor.mailer.SendEmail(subject, content, to, nil, nil, nil)
