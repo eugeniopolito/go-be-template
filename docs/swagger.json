@@ -1,0 +1,176 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "description": "create a new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "create a new user",
+                "parameters": [
+                    {
+                        "description": "createUserRequest",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.createUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.userResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/login": {
+            "post": {
+                "description": "returns a new PASETO token and the logged user info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "perform a new user login",
+                "parameters": [
+                    {
+                        "description": "loginUserRequest",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.loginUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.loginUserResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "no rows in resultset"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "api.createUserRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "name",
+                "password",
+                "role",
+                "surname",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                },
+                "role": {
+                    "description": "The Role of the user\nexample: 1 for admin, 2 for user",
+                    "type": "integer"
+                },
+                "surname": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.loginUserRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.loginUserResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/api.userResponse"
+                }
+            }
+        },
+        "api.userResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "description": "The Email of the user\nexample: joe.doe@email.com",
+                    "type": "string"
+                },
+                "enabled": {
+                    "description": "The enabled/disabeld flag\nexample: 0 for disabled, 1 for enabled",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "The Name of he user\nexample: Some name",
+                    "type": "string"
+                },
+                "password_change_at": {
+                    "type": "string"
+                },
+                "role": {
+                    "description": "The Role of the user\nexample: 1 for admin, 2 for user",
+                    "type": "integer"
+                },
+                "surname": {
+                    "description": "The Surname of he user\nexample: Some name",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "The username of a thing\nexample: joedoe",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

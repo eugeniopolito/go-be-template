@@ -1,0 +1,132 @@
+definitions:
+  api.createUserRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      role:
+        description: |-
+          The Role of the user
+          example: 1 for admin, 2 for user
+        type: integer
+      surname:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - role
+    - surname
+    - username
+    type: object
+  api.loginUserRequest:
+    properties:
+      password:
+        minLength: 6
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  api.loginUserResponse:
+    properties:
+      access_token:
+        type: string
+      user:
+        $ref: '#/definitions/api.userResponse'
+    type: object
+  api.userResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        description: |-
+          The Email of the user
+          example: joe.doe@email.com
+        type: string
+      enabled:
+        description: |-
+          The enabled/disabeld flag
+          example: 0 for disabled, 1 for enabled
+        type: boolean
+      name:
+        description: |-
+          The Name of he user
+          example: Some name
+        type: string
+      password_change_at:
+        type: string
+      role:
+        description: |-
+          The Role of the user
+          example: 1 for admin, 2 for user
+        type: integer
+      surname:
+        description: |-
+          The Surname of he user
+          example: Some name
+        type: string
+      username:
+        description: |-
+          The username of a thing
+          example: joedoe
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: create a new user
+      parameters:
+      - description: createUserRequest
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/api.createUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.userResponse'
+      summary: create a new user
+      tags:
+      - users
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: returns a new PASETO token and the logged user info
+      parameters:
+      - description: loginUserRequest
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/api.loginUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.loginUserResponse'
+        "404":
+          description: no rows in resultset
+      summary: perform a new user login
+      tags:
+      - users
+swagger: "2.0"

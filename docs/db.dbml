@@ -1,0 +1,34 @@
+Project GO_BE_Template {
+  database_type: 'PostgreSQL'
+  Note: '''
+    # GO BE Template Database
+  '''
+}
+
+Table users as U {
+  username varchar [pk]
+  password varchar [not null]
+  name varchar [not null]
+  surname varchar [not null]
+  enabled boolean [not null]
+  role int 
+  email varchar [unique, not null]
+  password_change_at timestamptz [not null, default: '0001-01-01 00:00:00Z']
+  created_at timestamptz [not null, default: `now()`]
+}
+
+
+Table verify_emails as A {
+  id bigserial [pk]
+  username varchar [ref: > U.username, not null]
+  email varchar [not null]
+  secret_code varchar [not null]
+  is_used boolean [not null, default: false]
+  balance bigint [not null]
+  created_at timestamptz [not null, default: `now()`]
+  expired_at timestamptz [not null, default: `now()+ interval '30 DAYS'`]
+  
+  Indexes {
+    username
+  }
+}
