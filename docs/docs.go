@@ -59,7 +59,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/api.userResponse"
+                                "$ref": "#/definitions/api.UserResponse"
                             }
                         }
                     }
@@ -89,7 +89,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.countUsersResponse"
+                            "$ref": "#/definitions/api.CountUsersResponse"
                         }
                     }
                 }
@@ -125,7 +125,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.userResponse"
+                            "$ref": "#/definitions/api.UserResponse"
                         }
                     }
                 }
@@ -146,12 +146,12 @@ const docTemplate = `{
                 "summary": "create a new user",
                 "parameters": [
                     {
-                        "description": "createUserRequest",
+                        "description": "CreateUserRequest",
                         "name": "req",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/api.createUserRequest"
+                            "$ref": "#/definitions/api.CreateUserRequest"
                         }
                     }
                 ],
@@ -159,7 +159,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.userResponse"
+                            "$ref": "#/definitions/api.UserResponse"
                         }
                     }
                 }
@@ -180,12 +180,12 @@ const docTemplate = `{
                 "summary": "perform a new user login",
                 "parameters": [
                     {
-                        "description": "loginUserRequest",
+                        "description": "LoginUserRequest",
                         "name": "req",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/api.loginUserRequest"
+                            "$ref": "#/definitions/api.LoginUserRequest"
                         }
                     }
                 ],
@@ -193,7 +193,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.loginUserResponse"
+                            "$ref": "#/definitions/api.LoginUserResponse"
                         }
                     },
                     "400": {
@@ -240,12 +240,12 @@ const docTemplate = `{
                 "summary": "perform the user verification with email check",
                 "parameters": [
                     {
-                        "description": "verifyEmailRequest",
+                        "description": "VerifyEmailRequest",
                         "name": "req",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/api.verifyEmailRequest"
+                            "$ref": "#/definitions/api.VerifyEmailRequest"
                         }
                     }
                 ],
@@ -253,7 +253,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.verifyEmailResponse"
+                            "$ref": "#/definitions/api.VerifyEmailResponse"
                         }
                     },
                     "500": {
@@ -264,7 +264,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "api.countUsersResponse": {
+        "api.CountUsersResponse": {
             "type": "object",
             "properties": {
                 "count": {
@@ -272,7 +272,7 @@ const docTemplate = `{
                 }
             }
         },
-        "api.createUserRequest": {
+        "api.CreateUserRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -305,7 +305,7 @@ const docTemplate = `{
                 }
             }
         },
-        "api.loginUserRequest": {
+        "api.LoginUserRequest": {
             "type": "object",
             "required": [
                 "password",
@@ -321,18 +321,18 @@ const docTemplate = `{
                 }
             }
         },
-        "api.loginUserResponse": {
+        "api.LoginUserResponse": {
             "type": "object",
             "properties": {
                 "access_token": {
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/api.userResponse"
+                    "$ref": "#/definitions/api.UserResponse"
                 }
             }
         },
-        "api.userResponse": {
+        "api.UserResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -367,7 +367,7 @@ const docTemplate = `{
                 }
             }
         },
-        "api.verifyEmailRequest": {
+        "api.VerifyEmailRequest": {
             "type": "object",
             "required": [
                 "email_id",
@@ -382,7 +382,7 @@ const docTemplate = `{
                 }
             }
         },
-        "api.verifyEmailResponse": {
+        "api.VerifyEmailResponse": {
             "type": "object",
             "properties": {
                 "is_verified": {

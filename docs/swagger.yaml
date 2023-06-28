@@ -1,10 +1,10 @@
 definitions:
-  api.countUsersResponse:
+  api.CountUsersResponse:
     properties:
       count:
         type: integer
     type: object
-  api.createUserRequest:
+  api.CreateUserRequest:
     properties:
       email:
         type: string
@@ -30,7 +30,7 @@ definitions:
     - surname
     - username
     type: object
-  api.loginUserRequest:
+  api.LoginUserRequest:
     properties:
       password:
         minLength: 6
@@ -41,14 +41,14 @@ definitions:
     - password
     - username
     type: object
-  api.loginUserResponse:
+  api.LoginUserResponse:
     properties:
       access_token:
         type: string
       user:
-        $ref: '#/definitions/api.userResponse'
+        $ref: '#/definitions/api.UserResponse'
     type: object
-  api.userResponse:
+  api.UserResponse:
     properties:
       created_at:
         type: string
@@ -85,7 +85,7 @@ definitions:
           example: joedoe
         type: string
     type: object
-  api.verifyEmailRequest:
+  api.VerifyEmailRequest:
     properties:
       email_id:
         type: integer
@@ -95,7 +95,7 @@ definitions:
     - email_id
     - secret_code
     type: object
-  api.verifyEmailResponse:
+  api.VerifyEmailResponse:
     properties:
       is_verified:
         type: boolean
@@ -132,7 +132,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/api.userResponse'
+              $ref: '#/definitions/api.UserResponse'
             type: array
       summary: get the user list paginated
       tags:
@@ -152,7 +152,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/api.countUsersResponse'
+            $ref: '#/definitions/api.CountUsersResponse'
       summary: get the user count for pagination
       tags:
       - users
@@ -176,7 +176,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/api.userResponse'
+            $ref: '#/definitions/api.UserResponse'
       summary: get the user info
       tags:
       - users
@@ -187,19 +187,19 @@ paths:
       description: creates a new user who receives a verification email on his/her
         email address to confirm the registration.
       parameters:
-      - description: createUserRequest
+      - description: CreateUserRequest
         in: body
         name: req
         required: true
         schema:
-          $ref: '#/definitions/api.createUserRequest'
+          $ref: '#/definitions/api.CreateUserRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/api.userResponse'
+            $ref: '#/definitions/api.UserResponse'
       summary: create a new user
       tags:
       - users
@@ -209,19 +209,19 @@ paths:
       - application/json
       description: returns a new PASETO token and the logged user info
       parameters:
-      - description: loginUserRequest
+      - description: LoginUserRequest
         in: body
         name: req
         required: true
         schema:
-          $ref: '#/definitions/api.loginUserRequest'
+          $ref: '#/definitions/api.LoginUserRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/api.loginUserResponse'
+            $ref: '#/definitions/api.LoginUserResponse'
         "400":
           description: user not verified
         "401":
@@ -248,19 +248,19 @@ paths:
       - application/json
       description: check the code received in the email during registration is correct
       parameters:
-      - description: verifyEmailRequest
+      - description: VerifyEmailRequest
         in: body
         name: req
         required: true
         schema:
-          $ref: '#/definitions/api.verifyEmailRequest'
+          $ref: '#/definitions/api.VerifyEmailRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/api.verifyEmailResponse'
+            $ref: '#/definitions/api.VerifyEmailResponse'
         "500":
           description: failed to verify email
       summary: perform the user verification with email check

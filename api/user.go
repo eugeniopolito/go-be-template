@@ -18,53 +18,6 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-type createUserRequest struct {
-	Username string `json:"username" binding:"required,alphanum"`
-	Email    string `json:"email" binding:"required,email"`
-	Name     string `json:"name" binding:"required"`
-	// The Role of the user
-	// example: 1 for admin, 2 for user
-	Role     int    `json:"role" binding:"required"`
-	Surname  string `json:"surname" binding:"required"`
-	Password string `json:"password" binding:"required,min=6"`
-}
-
-type userResponse struct {
-	// The username of a thing
-	// example: joedoe
-	Username string `json:"username"`
-	// The Name of he user
-	// example: Some name
-	Name string `json:"name"`
-	// The Surname of he user
-	// example: Some name
-	Surname string `json:"surname"`
-	// The enabled/disabeld flag
-	// example: 0 for disabled, 1 for enabled
-	Enabled bool `json:"enabled"`
-	// The Email of the user
-	// example: joe.doe@email.com
-	Email string `json:"email"`
-	// The Role of the user
-	// example: 1 for admin, 2 for user
-	Role             int       `json:"role"`
-	PasswordChangeAt time.Time `json:"password_change_at"`
-	CreatedAt        time.Time `json:"created_at"`
-}
-
-func createUserResponse(user db.User) userResponse {
-	return userResponse{
-		Username:         user.Username,
-		Name:             user.Name,
-		Surname:          user.Surname,
-		Email:            user.Email,
-		Role:             int(user.Role.Int32),
-		Enabled:          user.Enabled,
-		CreatedAt:        user.CreatedAt,
-		PasswordChangeAt: user.PasswordChangeAt,
-	}
-}
-
 // @BasePath /api/v1
 
 // Create User godoc
@@ -74,11 +27,11 @@ func createUserResponse(user db.User) userResponse {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param req body createUserRequest true "createUserRequest"
-// @Success 200 {object} userResponse
+// @Param req body CreateUserRequest true "CreateUserRequest"
+// @Success 200 {object} UserResponse
 // @Router /users [post]
 func (server *Server) createUser(ctx *gin.Context) {
-	var req createUserRequest
+	var req CreateUserRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err.Error()))
 		return
@@ -124,18 +77,9 @@ func (server *Server) createUser(ctx *gin.Context) {
 		return
 	}
 
-	rsp := createUserResponse(txResult.User)
+	rsp := CreateUserResponse(txResult.User)
 
 	ctx.JSON(http.StatusCreated, rsp)
-}
-
-type verifyEmailRequest struct {
-	EmailId    int    `form:"email_id" binding:"required"`
-	SecretCode string `form:"secret_code" binding:"required"`
-}
-
-type verifyEmailResponse struct {
-	IsVerified bool `json:"is_verified"`
 }
 
 // @BasePath /api/v1
@@ -147,12 +91,12 @@ type verifyEmailResponse struct {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param req body verifyEmailRequest true "verifyEmailRequest"
-// @Success 200 {object} verifyEmailResponse
+// @Param req body VerifyEmailRequest true "VerifyEmailRequest"
+// @Success 200 {object} VerifyEmailResponse
 // @Failure 500 "failed to verify email"
 // @Router /verify_email [get]
 func (server *Server) verifyEmail(ctx *gin.Context) {
-	var req verifyEmailRequest
+	var req VerifyEmailRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err.Error()))
 		return
@@ -169,21 +113,11 @@ func (server *Server) verifyEmail(ctx *gin.Context) {
 		return
 	}
 
-	rsp := &verifyEmailResponse{
+	rsp := &VerifyEmailResponse{
 		IsVerified: txResult.User.IsEmailVerified,
 	}
 
 	ctx.JSON(http.StatusCreated, rsp)
-}
-
-type loginUserRequest struct {
-	Username string `json:"username" binding:"required,alphanum"`
-	Password string `json:"password" binding:"required,min=6"`
-}
-
-type loginUserResponse struct {
-	AccessToken string       `json:"access_token"`
-	User        userResponse `json:"user"`
 }
 
 // @BasePath /api/v1
@@ -195,8 +129,8 @@ type loginUserResponse struct {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param req body loginUserRequest true "loginUserRequest"
-// @Success 200 {object} loginUserResponse
+// @Param req body LoginUserRequest true "LoginUserRequest"
+// @Success 200 {object} LoginUserResponse
 // @Failure 404 "no rows in resultset"
 // @Failure 400 "user not verified"
 // @Failure 401 "invalid credentials"
@@ -204,7 +138,7 @@ type loginUserResponse struct {
 func (server *Server) loginUser(ctx *gin.Context) {
 	session := sessions.Default(ctx)
 
-	var req loginUserRequest
+	var req LoginUserRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err.Error()))
 		return
@@ -244,15 +178,11 @@ func (server *Server) loginUser(ctx *gin.Context) {
 
 	log.Info().Str("user", user.Username).Msg("successfully logged in")
 
-	loginResponse := loginUserResponse{
+	loginResponse := LoginUserResponse{
 		AccessToken: accessToken,
-		User:        createUserResponse(user),
+		User:        CreateUserResponse(user),
 	}
 	ctx.JSON(http.StatusOK, loginResponse)
-}
-
-type getUserRequest struct {
-	Username string `uri:"username" binding:"required"`
 }
 
 // @BasePath /api/v1
@@ -265,10 +195,10 @@ type getUserRequest struct {
 // @Param username path string  true  "Username"
 // @Param authorization header string  true  "Authorization"
 // @Produce json
-// @Success 200 {object} userResponse
+// @Success 200 {object} UserResponse
 // @Router /user/{username} [get]
 func (server *Server) getUser(ctx *gin.Context) {
-	var req getUserRequest
+	var req GetUserRequest
 	if err := ctx.ShouldBindUri(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err.Error()))
 		return
@@ -290,7 +220,7 @@ func (server *Server) getUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, createUserResponse(user))
+	ctx.JSON(http.StatusOK, CreateUserResponse(user))
 }
 
 // @BasePath /api/v1
@@ -325,11 +255,11 @@ func (server *Server) logoutUser(c *gin.Context) {
 // @Param authorization header string  true  "Authorization"
 // @Accept json
 // @Produce json
-// @Param req query paginationRequest true "paginationRequest"
-// @Success 200 {array} userResponse
+// @Param req query PaginationRequest true "PaginationRequest"
+// @Success 200 {array} UserResponse
 // @Router /admin/users [get]
 func (server *Server) listUsers(ctx *gin.Context) {
-	var req paginationRequest
+	var req PaginationRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err.Error()))
 		return
@@ -348,15 +278,11 @@ func (server *Server) listUsers(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err.Error()))
 		return
 	}
-	var lUsers []userResponse
+	var lUsers []UserResponse
 	for _, u := range users {
-		lUsers = append(lUsers, createUserResponse(u))
+		lUsers = append(lUsers, CreateUserResponse(u))
 	}
 	ctx.JSON(http.StatusOK, lUsers)
-}
-
-type countUsersResponse struct {
-	Count int `json:"count"`
 }
 
 // @BasePath /api/v1
@@ -368,7 +294,7 @@ type countUsersResponse struct {
 // @Tags users
 // @Param authorization header string  true  "Authorization"
 // @Produce json
-// @Success 200 {object} countUsersResponse
+// @Success 200 {object} CountUsersResponse
 // @Router /admin/users/count [get]
 func (server *Server) countUsers(ctx *gin.Context) {
 	countUsers, err := server.store.CountUsers(ctx)
@@ -376,7 +302,7 @@ func (server *Server) countUsers(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err.Error()))
 		return
 	}
-	countResponse := countUsersResponse{
+	countResponse := CountUsersResponse{
 		Count: int(countUsers),
 	}
 	ctx.JSON(http.StatusOK, countResponse)

@@ -47,7 +47,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/api.userResponse"
+                                "$ref": "#/definitions/api.UserResponse"
                             }
                         }
                     }
@@ -77,7 +77,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.countUsersResponse"
+                            "$ref": "#/definitions/api.CountUsersResponse"
                         }
                     }
                 }
@@ -113,7 +113,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.userResponse"
+                            "$ref": "#/definitions/api.UserResponse"
                         }
                     }
                 }
@@ -134,12 +134,12 @@
                 "summary": "create a new user",
                 "parameters": [
                     {
-                        "description": "createUserRequest",
+                        "description": "CreateUserRequest",
                         "name": "req",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/api.createUserRequest"
+                            "$ref": "#/definitions/api.CreateUserRequest"
                         }
                     }
                 ],
@@ -147,7 +147,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.userResponse"
+                            "$ref": "#/definitions/api.UserResponse"
                         }
                     }
                 }
@@ -168,12 +168,12 @@
                 "summary": "perform a new user login",
                 "parameters": [
                     {
-                        "description": "loginUserRequest",
+                        "description": "LoginUserRequest",
                         "name": "req",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/api.loginUserRequest"
+                            "$ref": "#/definitions/api.LoginUserRequest"
                         }
                     }
                 ],
@@ -181,7 +181,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.loginUserResponse"
+                            "$ref": "#/definitions/api.LoginUserResponse"
                         }
                     },
                     "400": {
@@ -228,12 +228,12 @@
                 "summary": "perform the user verification with email check",
                 "parameters": [
                     {
-                        "description": "verifyEmailRequest",
+                        "description": "VerifyEmailRequest",
                         "name": "req",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/api.verifyEmailRequest"
+                            "$ref": "#/definitions/api.VerifyEmailRequest"
                         }
                     }
                 ],
@@ -241,7 +241,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.verifyEmailResponse"
+                            "$ref": "#/definitions/api.VerifyEmailResponse"
                         }
                     },
                     "500": {
@@ -252,7 +252,7 @@
         }
     },
     "definitions": {
-        "api.countUsersResponse": {
+        "api.CountUsersResponse": {
             "type": "object",
             "properties": {
                 "count": {
@@ -260,7 +260,7 @@
                 }
             }
         },
-        "api.createUserRequest": {
+        "api.CreateUserRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -293,7 +293,7 @@
                 }
             }
         },
-        "api.loginUserRequest": {
+        "api.LoginUserRequest": {
             "type": "object",
             "required": [
                 "password",
@@ -309,18 +309,18 @@
                 }
             }
         },
-        "api.loginUserResponse": {
+        "api.LoginUserResponse": {
             "type": "object",
             "properties": {
                 "access_token": {
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/api.userResponse"
+                    "$ref": "#/definitions/api.UserResponse"
                 }
             }
         },
-        "api.userResponse": {
+        "api.UserResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -355,7 +355,7 @@
                 }
             }
         },
-        "api.verifyEmailRequest": {
+        "api.VerifyEmailRequest": {
             "type": "object",
             "required": [
                 "email_id",
@@ -370,7 +370,7 @@
                 }
             }
         },
-        "api.verifyEmailResponse": {
+        "api.VerifyEmailResponse": {
             "type": "object",
             "properties": {
                 "is_verified": {

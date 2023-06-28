@@ -23,11 +23,6 @@ type Server struct {
 	taskDistributor worker.TaskDistributor
 }
 
-type paginationRequest struct {
-	Page     int32 `form:"page" binding:"required,min=1"`
-	PageSize int32 `form:"size" binding:"required,min=1,max=100"`
-}
-
 const userkey = "user"
 
 var secret = []byte("S3CrEt!25#")
