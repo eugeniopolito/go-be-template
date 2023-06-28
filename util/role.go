@@ -1,8 +1,9 @@
 package util
 
 const (
-	ADMIN = 1
-	USER  = 2
+	_     int = iota
+	ADMIN     // 1
+	USER      // 2
 )
 
 func IsSupportedRole(role int) bool {
