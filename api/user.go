@@ -1,8 +1,6 @@
 package api
 
 import (
-	"database/sql"
-	"errors"
 	"net/http"
 	"strings"
 	"time"
@@ -33,13 +31,13 @@ import (
 func (server *Server) createUser(ctx *gin.Context) {
 	var req CreateUserRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, errorResponse(err.Error()))
+		ctx.JSON(http.StatusBadRequest, errorResponse("invalid request parameters"))
 		return
 	}
 
 	hashedPassword, err := util.HashPassword(req.Password)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, errorResponse("Internal Server Error"))
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to hash password"))
 		return
 	}
 
@@ -98,7 +96,7 @@ func (server *Server) createUser(ctx *gin.Context) {
 func (server *Server) verifyEmail(ctx *gin.Context) {
 	var req VerifyEmailRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, errorResponse(err.Error()))
+		ctx.JSON(http.StatusBadRequest, errorResponse("invalid request parameters"))
 		return
 	}
 
@@ -140,7 +138,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 
 	var req LoginUserRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, errorResponse(err.Error()))
+		ctx.JSON(http.StatusBadRequest, errorResponse("invalid request parameters"))
 		return
 	}
 
@@ -162,13 +160,13 @@ func (server *Server) loginUser(ctx *gin.Context) {
 	}
 	accessToken, err := server.tokenMaker.CreateToken(req.Username, int(user.Role.Int32), server.config.AccessTokenDuration)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, errorResponse(err.Error()))
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to create token"))
 		return
 	}
 
 	session.Set(userkey, req.Username)
 	if err := session.Save(); err != nil {
-		ctx.JSON(http.StatusInternalServerError, errorResponse(err.Error()))
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to save session"))
 		return
 	}
 
@@ -196,23 +194,18 @@ func (server *Server) loginUser(ctx *gin.Context) {
 func (server *Server) getUser(ctx *gin.Context) {
 	var req GetUserRequest
 	if err := ctx.ShouldBindUri(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, errorResponse(err.Error()))
+		ctx.JSON(http.StatusBadRequest, errorResponse("invalid request parameters"))
 		return
 	}
 	user, err := server.store.GetUser(ctx, req.Username)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			ctx.JSON(http.StatusNotFound, errorResponse(err.Error()))
-			return
-		}
-		ctx.JSON(http.StatusInternalServerError, errorResponse(err.Error()))
+		ctx.JSON(http.StatusInternalServerError, errorResponse("user not found"))
 		return
 	}
 
 	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
 	if authPayload.Username != user.Username {
-		err := errors.New("user doesn't belong to the authenticated user")
-		ctx.JSON(http.StatusUnauthorized, errorResponse(err.Error()))
+		ctx.JSON(http.StatusUnauthorized, errorResponse("invalid token"))
 		return
 	}
 
@@ -235,7 +228,7 @@ func (server *Server) logoutUser(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Delete(userkey)
 	if err := session.Save(); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save session"})
+		c.JSON(http.StatusInternalServerError, errorResponse("failed to save session"))
 		return
 	}
 	c.JSON(http.StatusOK, "Successfully logged out")
@@ -257,7 +250,7 @@ func (server *Server) logoutUser(c *gin.Context) {
 func (server *Server) listUsers(ctx *gin.Context) {
 	var req PaginationRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, errorResponse(err.Error()))
+		ctx.JSON(http.StatusBadRequest, errorResponse("invalid request parameters"))
 		return
 	}
 
@@ -267,11 +260,7 @@ func (server *Server) listUsers(ctx *gin.Context) {
 	}
 	users, err := server.store.ListUsers(ctx, arg)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			ctx.JSON(http.StatusNotFound, errorResponse(err.Error()))
-			return
-		}
-		ctx.JSON(http.StatusInternalServerError, errorResponse(err.Error()))
+		ctx.JSON(http.StatusNotFound, errorResponse("users not found"))
 		return
 	}
 	var lUsers []UserResponse
@@ -295,7 +284,7 @@ func (server *Server) listUsers(ctx *gin.Context) {
 func (server *Server) countUsers(ctx *gin.Context) {
 	countUsers, err := server.store.CountUsers(ctx)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, errorResponse(err.Error()))
+		ctx.JSON(http.StatusInternalServerError, errorResponse("invalid request parameters"))
 		return
 	}
 	countResponse := CountUsersResponse{
