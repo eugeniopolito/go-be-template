@@ -21,7 +21,7 @@ const (
 	authorizationPayloadKey = "authorization_payload"
 )
 
-func authMiddleware(tokenMaker token.Maker, checkRole bool, role int) gin.HandlerFunc {
+func AuthMiddleware(tokenMaker token.Maker, checkRole bool, role int) gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
 

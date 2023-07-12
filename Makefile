@@ -25,7 +25,7 @@ build-docker-image:
 	docker-compose build --no-cache --pull 
 
 docker-up:
-	docker-compose up
+	docker-compose up -d
 
 docker-down:
 	docker-compose down
