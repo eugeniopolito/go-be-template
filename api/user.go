@@ -146,11 +146,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 
 	user, err := server.store.GetUser(ctx, req.Username)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			ctx.JSON(http.StatusNotFound, errorResponse(err.Error()))
-			return
-		}
-		ctx.JSON(http.StatusInternalServerError, errorResponse(err.Error()))
+		ctx.JSON(http.StatusNotFound, errorResponse("user not found"))
 		return
 	}
 
