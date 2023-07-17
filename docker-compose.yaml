@@ -25,7 +25,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - 80:8080
     environment:
       - DB_SOURCE=postgresql://root:secret@postgres:5432/app?sslmode=disable
       - GIN_MODE=debug
@@ -35,9 +35,3 @@ services:
       - redis
     entrypoint: ["/app/wait_for.sh", "postgres:5432", "--", "/app/start.sh"]
     command: ["/app/main"]
-  nginx:
-    build: "./nginx"
-    ports:
-      - "80:80"
-    depends_on:
-      - "api"
