@@ -18,7 +18,7 @@ type EmailSender interface {
 	) error
 }
 
-type GmailSender struct {
+type EmailConfigSender struct {
 	name              string
 	fromEmailAddress  string
 	fromEmailPassword string
@@ -26,8 +26,8 @@ type GmailSender struct {
 	smtpServerAddress string
 }
 
-func NewGmailSender(name string, fromEmailAddress string, fromEmailPassword string, smtpAuthAddress string, smtpServerAddress string) EmailSender {
-	return &GmailSender{
+func NewEmailConfigSender(name string, fromEmailAddress string, fromEmailPassword string, smtpAuthAddress string, smtpServerAddress string) EmailSender {
+	return &EmailConfigSender{
 		name:              name,
 		fromEmailAddress:  fromEmailAddress,
 		fromEmailPassword: fromEmailPassword,
@@ -36,7 +36,7 @@ func NewGmailSender(name string, fromEmailAddress string, fromEmailPassword stri
 	}
 }
 
-func (sender *GmailSender) SendEmail(
+func (sender *EmailConfigSender) SendEmail(
 	subject string,
 	content string,
 	to []string,
