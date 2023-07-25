@@ -144,7 +144,11 @@ func (server *Server) loginUser(ctx *gin.Context) {
 
 	user, err := server.store.GetUser(ctx, req.Username)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, errorResponse("user not found"))
+		if err == db.ErrRecordNotFound {
+			ctx.JSON(http.StatusNotFound, errorResponse("user not found"))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err.Error()))
 		return
 	}
 
@@ -199,7 +203,11 @@ func (server *Server) getUser(ctx *gin.Context) {
 	}
 	user, err := server.store.GetUser(ctx, req.Username)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, errorResponse("user not found"))
+		if err == db.ErrRecordNotFound {
+			ctx.JSON(http.StatusNotFound, errorResponse("user not found"))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err.Error()))
 		return
 	}
 
@@ -260,7 +268,11 @@ func (server *Server) listUsers(ctx *gin.Context) {
 	}
 	users, err := server.store.ListUsers(ctx, arg)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, errorResponse("users not found"))
+		if err == db.ErrRecordNotFound {
+			ctx.JSON(http.StatusNotFound, errorResponse("user not found"))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err.Error()))
 		return
 	}
 	var lUsers []UserResponse
