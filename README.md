@@ -35,7 +35,11 @@ This framework includes everything you need to build APIs with Golang: Nginx, Po
     npm install -g @dbml/cli
     dbml2sql --version
     ```
+- [Swag](https://github.com/swaggo/swag)
 
+    ```
+    go get -u github.com/swaggo/swag/cmd/swag
+    ```
 
 ### Setup infrastructure
 

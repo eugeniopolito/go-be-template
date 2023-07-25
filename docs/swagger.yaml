@@ -134,6 +134,8 @@ paths:
             items:
               $ref: '#/definitions/api.UserResponse'
             type: array
+        "404":
+          description: user not found
       summary: get the user list paginated
       tags:
       - users
@@ -177,6 +179,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/api.UserResponse'
+        "404":
+          description: user not found
       summary: get the user info
       tags:
       - users
@@ -200,6 +204,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/api.UserResponse'
+        "409":
+          description: user already exists
       summary: create a new user
       tags:
       - users
@@ -227,7 +233,7 @@ paths:
         "401":
           description: invalid credentials
         "404":
-          description: no rows in resultset
+          description: user not found
       summary: perform a new user login
       tags:
       - users

@@ -26,6 +26,7 @@ import (
 // @Produce json
 // @Param req body CreateUserRequest true "CreateUserRequest"
 // @Success 200 {object} UserResponse
+// @failure 409 "user already exists"
 // @Router /users [post]
 func (server *Server) createUser(ctx *gin.Context) {
 	var req CreateUserRequest
@@ -128,7 +129,7 @@ func (server *Server) verifyEmail(ctx *gin.Context) {
 // @Produce json
 // @Param req body LoginUserRequest true "LoginUserRequest"
 // @Success 200 {object} LoginUserResponse
-// @Failure 404 "no rows in resultset"
+// @Failure 404 "user not found"
 // @Failure 400 "user not verified"
 // @Failure 401 "invalid credentials"
 // @Router /users/login [post]
@@ -193,6 +194,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 // @Param authorization header string  true  "Authorization"
 // @Produce json
 // @Success 200 {object} UserResponse
+// @failure 404 "user not found"
 // @Router /user/{username} [get]
 func (server *Server) getUser(ctx *gin.Context) {
 	var req GetUserRequest
@@ -253,6 +255,7 @@ func (server *Server) logoutUser(c *gin.Context) {
 // @Produce json
 // @Param req query PaginationRequest true "PaginationRequest"
 // @Success 200 {array} UserResponse
+// @failure 404 "user not found"
 // @Router /admin/users [get]
 func (server *Server) listUsers(ctx *gin.Context) {
 	var req PaginationRequest

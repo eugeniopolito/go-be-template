@@ -62,6 +62,9 @@ const docTemplate = `{
                                 "$ref": "#/definitions/api.UserResponse"
                             }
                         }
+                    },
+                    "404": {
+                        "description": "user not found"
                     }
                 }
             }
@@ -127,6 +130,9 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/api.UserResponse"
                         }
+                    },
+                    "404": {
+                        "description": "user not found"
                     }
                 }
             }
@@ -161,6 +167,9 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/api.UserResponse"
                         }
+                    },
+                    "409": {
+                        "description": "user already exists"
                     }
                 }
             }
@@ -203,7 +212,7 @@ const docTemplate = `{
                         "description": "invalid credentials"
                     },
                     "404": {
-                        "description": "no rows in resultset"
+                        "description": "user not found"
                     }
                 }
             }
