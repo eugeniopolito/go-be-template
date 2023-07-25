@@ -2,7 +2,6 @@ package api
 
 import (
 	"net/http"
-	"strings"
 	"time"
 
 	db "github.com/eugeniopolito/gobetemplate/db/sqlc"
@@ -66,9 +65,9 @@ func (server *Server) createUser(ctx *gin.Context) {
 
 	txResult, err := server.store.CreateUserTx(ctx, arg)
 	if err != nil {
-		if strings.Contains(err.Error(), "users_pkey") {
+		if db.ErrorCode(err) == db.UinqueViolation {
 			log.Error().Str("user", req.Username).Msg("User already exists")
-			ctx.JSON(http.StatusBadRequest, errorResponse(("User already exists")))
+			ctx.JSON(http.StatusConflict, errorResponse(("user already exists")))
 			return
 		}
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err.Error()))
